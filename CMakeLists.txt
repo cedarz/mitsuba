@@ -4,8 +4,8 @@ project(Mitsuba)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(ENV{http_proxy}  "http://127.0.0.1:10809") # for http
-set(ENV{https_proxy} "http://127.0.0.1:10809") # for https
+# set(ENV{http_proxy}  "http://127.0.0.1:10809") # for http
+# set(ENV{https_proxy} "http://127.0.0.1:10809") # for https
 
 if(NOT COMPILE_THREAD)
 	include(ProcessorCount)
@@ -60,7 +60,13 @@ set(OpenEXR_ROOT ${MITSUBA_DEPENDENCY_DIR})
 find_package(OpenEXR REQUIRED)
 
 set(BOOST_ROOT ${MITSUBA_DEPENDENCY_DIR})
-find_package(Boost 1.77.0 REQUIRED COMPONENTS ${PYTHON_VERSION_WITHOUT_DOT} filesystem thread chrono date_time atomic)
+list(APPEND CMAKE_PREFIX_PATH ${MITSUBA_DEPENDENCY_DIR}/lib/cmake)
+find_package(boost_filesystem 1.77.0 REQUIRED CONFIG)
+find_package(boost_thread 1.77.0 REQUIRED CONFIG)
+find_package(boost_chrono 1.77.0 REQUIRED CONFIG)
+find_package(boost_date_time 1.77.0 REQUIRED CONFIG)
+find_package(boost_atomic 1.77.0 REQUIRED CONFIG)
+find_package(boost_${PYTHON_VERSION_WITHOUT_DOT} 1.77.0 REQUIRED CONFIG)
 
 set(libjpeg-turbo_ROOT ${MITSUBA_DEPENDENCY_DIR})
 find_package(libjpeg-turbo REQUIRED)
@@ -89,7 +95,7 @@ set(OPENEXR_LIB_LIST OpenEXR::OpenEXR OpenEXR::IlmThread OpenEXR::Iex)
 set(BOOST_LIB_LIST Boost::${PYTHON_VERSION_WITHOUT_DOT} Boost::filesystem Boost::thread)
 set(JEPG_LIB_LIST libjpeg-turbo::jpeg)
 set(XERCES_LIB_LIST XercesC::XercesC)
-set(PNG_LIB_LIST libpng16)
+set(PNG_LIB_LIST libpng18)
 set(FFTW_LIB_LIST libfftw3-3)
 set(GL_LIB_LIST opengl32 glu32 glew32 gdi32 user32)
 
